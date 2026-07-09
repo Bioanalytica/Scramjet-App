@@ -1,18 +1,19 @@
 FROM node:18-alpine
 
 ENV NODE_ENV=production
-ARG NPM_BUILD="npm install --omit=dev"
 EXPOSE 8080/tcp
 
 LABEL maintainer="Mercury Workshop"
-LABEL summary="Scramjet Demo Image"
-LABEL description="Example application of Scramjet"
+LABEL summary="Scramjet Proxy"
+LABEL description="Service-worker based web proxy for JS-heavy sites"
 
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json", "./"]
+RUN corepack enable && corepack prepare pnpm@10 --activate
 RUN apk add --upgrade --no-cache python3 make g++
-RUN $NPM_BUILD
+
+COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile --prod
 
 COPY . .
 
