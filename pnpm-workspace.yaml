@@ -1,2 +1,4 @@
 onlyBuiltDependencies:
   - '@mercuryworkshop/scramjet'
+# 7-day supply-chain cooldown on every resolved version (minutes).
+minimumReleaseAge: 10080
